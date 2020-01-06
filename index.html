@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+    <meta charset="UTF-8">
+    <title>GOA</title>
+<!-- Firebase -->
+     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+  
+ // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBIHDt3IWtK7yw0fwIRmByz5AgLJ2pTm6M",
+    authDomain: "jntuhat.firebaseapp.com",
+    databaseURL: "https://jntuhat.firebaseio.com",
+    projectId: "jntuhat",
+    storageBucket: "",
+    messagingSenderId: "585431580345",
+    appId: "1:585431580345:web:d606192627bee027"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/ui/4.3.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.3.0/firebase-ui-auth.css" />
+    <script type="text/javascript">
+    
+    // Check State change (sign in and sign out)
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+
+alert("Hello! I am an alert box!!");
+
+    var user = firebase.auth().currentUser;
+
+    if(user != null){
+// Display user Phone Number
+    alert(user.phoneNumber);
+    // Display Form for profile
+     document.getElementById("profileform").style.display = "block";
+
+    }
+
+  } else {
+    // No user is signed in.
+   alert("Hello! box!! <br/>");
+// Display Firebase form for authentication (Since no user is signed in)
+
+   ui.start('#firebaseui-auth-container', uiConfig);
+           var retVal = confirm("WE NEED YOUR CURRENT GEOLOCATION \nALLOW ?");
+               if( retVal == true ) {
+             
+                 if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    alert("Couldn't get location");
+    }
+  function showPosition(position) {
+  document.getElementById("latitude").value = position.coords.latitude; 
+   document.getElementById("longitude").value = position.coords.longitude;
+}
+                  return true;
+               } else {
+        alert("Couldn't get location");
+       // location.reload();
+                  return false;
+               }
+
+  }
+});
+      // FirebaseUI config.
+      var uiConfig = {
+        callbacks: {
+          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            var user = authResult.user;
+            var credential = authResult.credential;
+            var isNewUser = authResult.additionalUserInfo.isNewUser;
+            var providerId = authResult.additionalUserInfo.providerId;
+            var operationType = authResult.operationType;
+            // Do something with the returned AuthResult.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            return false;
+          },
+          signInFailure: function(error) {
+            // Some unrecoverable error occurred during sign-in.
+            // Return a promise when error handling is completed and FirebaseUI
+            // will reset, clearing any UI. This commonly occurs for error code
+            // 'firebaseui/anonymous-upgrade-merge-conflict' when merge conflict
+            // occurs. Check below for more details on this.
+            return handleUIError(error);
+          },
+          uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
+          }
+        },
+        credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+        // Query parameter name for mode.
+        queryParameterForWidgetMode: 'mode',
+        // Query parameter name for sign in success url.
+        queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
+        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+        signInFlow: 'popup',
+        signInSuccessUrl: 'custom.php',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          {
+            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+           
+            // Invisible reCAPTCHA with image challenge and bottom left badge.
+            recaptchaParameters: {
+              type: 'image',
+              size: 'invisible',
+              badge: 'bottomleft'
+            },
+            whitelistedCountries: ['IND', '+91']
+          },
+         
+        ],
+        // Set to true if you only have a single federated provider like
+        // firebase.auth.GoogleAuthProvider.PROVIDER_ID and you would like to
+        // immediately redirect to the provider's site instead of showing a
+        // 'Sign in with Provider' button first. In order for this to take
+        // effect, the signInFlow option must also be set to 'redirect'.
+        immediateFederatedRedirect: false,
+        // tosUrl and privacyPolicyUrl accept eicther url string or a callback
+        // function.
+        // Terms of service url/callback.
+        tosUrl: '<your-tos-url>',
+        // Privacy policy url/callback.
+        privacyPolicyUrl: function() {
+          window.location.assign('<your-privacy-policy-url>');
+        }
+      };
+
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      
+ 
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    
+  </head>
+  <body onload="checkuser()">
+    <!-- The surrounding HTML is left untouched by FirebaseUI.
+         Your app may use that space for branding, controls and other customizations.-->
+ <br/>
+<!-- Firebase Authentication Form -->
+    <div id="firebaseui-auth-container"></div>
+    
+    
+    <!-- Profile Form -->
+    <form class="container" id="profileform" action="addrollno.php" method="post" style="display:none">
+
+    <center><h4>PROFILE</h4></center>
+    <br/>
+        <br/>
+
+    <div class="form-group">
+<input  type="number" name="pincode" id="pincode" value=""/>
+              <label for="input" class="control-label">PINCODE</label><i class="bar"></i>
+            </div>  
+                  <br/>
+                  
+              <div class="form-group">
+<textarea  type="textarea" name="address" id="address" value=""></textarea>
+              <label for="input" class="control-label">ADDRESS</label><i class="bar"></i>
+            </div> 
+                  <br/>
+              <div class="form-group">
+<select>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+              <label for="input" class="control-label">GENDER</label><i class="bar"></i>
+            </div> 
+                      
+
+
+     <center><button  class="button"  id="save" onClick="save()"><span>SAVE</span></button></center>
+
+</form>
+
+
+<!-- Complain Form -->
+ <form class="container" id="complainform" action="addrollno.php" method="post">
+ 
+    <center><h4>COMPLAIN DETAILS</h4></center>
+    <br/>
+        <br/>
+
+    <div class="form-group">
+<input  type="number" name="pincode" id="pincode" value=""/>
+              <label for="input" class="control-label">PINCODE</label><i class="bar"></i>
+            </div>  
+                  <br/>
+                  
+              <div class="form-group">
+<input  type="text" name="latitude" id="latitude" value="" readonly/>
+              <label for="input" class="control-label">LATITUDE</label><i class="bar"></i>
+            </div>  
+                  <br/>
+                  
+                  <div class="form-group">
+<input  type="text" name="longitude" id="longitude" value="" readonly/>
+              <label for="input" class="control-label">LONGITUDE</label><i class="bar"></i>
+            </div>  
+                  <br/>
+                      
+
+     <center><button  class="button"  id="submitcomplain" onClick="save()"><span>SUBMIT</span></button></center>
+
+</form>
+
+<!-- Your Google API (key) -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAKd5xQtlYZLGU8Oc1O4-MhtR1N6fGx3M&callback=myMap"></script>
+  </body>
+</html>
